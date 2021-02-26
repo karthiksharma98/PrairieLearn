@@ -68,9 +68,11 @@ def execute_code(fname_ref, fname_student, include_plt=False,
     with open(fname_student, 'r', encoding='utf-8') as f:
         filename, extension = path.splitext(fname_student)
         if extension == '.ipynb':
-            str_student = pl_helpers.extract_ipynb_contents(f, ipynb_key)
+            str_student = pl_helpers.extract_ipynb_contents(f, ipynb_key) # this is a list of strings
         else:
             str_student = f.read()
+    # Remove excercise decorators
+    str_student = str_student.replace('@exercise\n','') # Cs101 changes
     str_student = str_leading + str_student + str_trailing
 
     with open(path.join(filenames_dir, 'test.py'), encoding='utf-8') as f:

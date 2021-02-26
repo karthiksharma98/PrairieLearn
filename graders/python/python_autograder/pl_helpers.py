@@ -26,11 +26,13 @@ def extract_ipynb_contents(f, ipynb_key):
     nb = read(f, 4)
     shell = InteractiveShell.instance()
     content = ''
+    #contents = []
     for cell in nb.cells:
         if cell['cell_type'] == 'code':
             code = shell.input_transformer_manager.transform_cell(cell.source)
             if code.strip().startswith(ipynb_key):
-                content += code
+                content += code 
+                #contents.append(code) ## Try returning list instead
     return content
 
 
@@ -105,7 +107,7 @@ def print_student_code(st_code='user_code.py', ipynb_key='#grade', as_feedback=T
     with open(st_code, 'r', encoding='utf-8') as f:
         filename, extension = splitext(st_code)
         if extension == '.ipynb':
-            contents = extract_ipynb_contents(f, ipynb_key).strip()
+            contents = extract_ipynb_contents(f, ipynb_key).strip() # need to modify
             lines = filter(lambda l: not l.strip().startswith(ipynb_key), contents.split('\n'))
             contents = '\n'.join(lines)
         else:
